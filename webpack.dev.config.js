@@ -4,10 +4,11 @@ const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
-const deps = require("./package.json").dependencies;
 
 module.exports = {
-  entry: ["./src/app.js"],
+  entry: {
+    app: ["./src/bootstrap.js"],
+  },
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist"),
@@ -63,51 +64,30 @@ module.exports = {
       description: "Remote App of Module Federation",
       template: "src/template.ejs",
     }),
-    // this doesn't work: https://github.com/webpack/webpack-dev-server/issues/2906
     new webpack.HotModuleReplacementPlugin(),
     new ModuleFederationPlugin({
       name: "FormApp",
       filename: "remoteEntry.js",
       exposes: {
-        "./initForm": "./src/form/init-form.js",
+        "./initContactForm": "./src/form/init-contact-form",
       },
       /*
-        More information on M.F. config settings can be found here:
-        https://github.com/webpack/webpack/pull/10960
-        https://github.com/webpack/webpack/blob/master/schemas/plugins/container/ModuleFederationPlugin.json
-        https://www.angulararchitects.io/en/aktuelles/getting-out-of-version-mismatch-hell-with-module-federation/
-      */
-      shared: {
-        // use object spread to change single entries
-        ...deps,
-        jquery: {
-          // // only a single version of the shared module is allowed
-          // singleton: true,
-          // /*
-          //   don't use shared version when version isn't valid.
-          //   Singleton or modules without fallback will throw, otherwise fallback is used
+        adds all your dependencies as shared modules
 
-          //   has no effect if there is no requiredVersion specified
-          // */
-          // strictVersion: false,
-          // // Version requirement from module in share scope.
-          // requiredVersion: `>=1.0.0 <=2.0.0`,
-          // // version: deps.jquery,
-          // /*
-          //   Include the provided and fallback module directly instead behind an async request.
-          //   This allows to use this shared module in initial load too. All possible shared modules need to be eager too.
-          // */
-          eager: true,
-        },
-        "lodash-es": {
-          singleton: true,
-          eager: true,
-        },
-        parsleyjs: {
-          singleton: true,
-          eager: true,
-        },
-      },
+        version is inferred from package.json in the dependencies
+
+        requiredVersion is used from your package.json
+
+        dependencies will automatically use the highest available package in the federated app, 
+        based on version requirement in package.json
+
+        multiple different versions might coexist in the federated app
+
+        Note that this will not affect nested paths like "lodash/pluck"
+
+        Note that this will disable some optimization on these packageswith might lead the bundle size problems
+      */
+      shared: require("./package.json").dependencies,
     }),
   ],
 };

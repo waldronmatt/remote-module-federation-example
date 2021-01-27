@@ -3,7 +3,7 @@ import "./form-style.scss";
 import "parsleyjs";
 import renderTemplate from "./template";
 import formHTML from "./form-html.tpl.html";
-import jQueryTest from "../jquery-test";
+import jQueryTest from "../heading/jquery-test";
 
 const printForm = () => {
   const body = document.querySelector("main");
@@ -27,10 +27,10 @@ const setupLogic = () => {
     });
 };
 
-const initForm = () => {
+const initContactForm = () => {
   jQueryTest();
   printForm();
   setupLogic();
 };
 
-export default initForm;
+export default initContactForm;
