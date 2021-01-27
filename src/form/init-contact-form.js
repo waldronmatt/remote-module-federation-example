@@ -3,7 +3,7 @@ import "./form-style.scss";
 import "parsleyjs";
 import renderTemplate from "./template";
 import formHTML from "./form-html.tpl.html";
-import jQueryTest from "../heading/jquery-test";
+import jQueryTest from "../jquery-test/jquery-test";
 
 const printForm = () => {
   const body = document.querySelector("main");
