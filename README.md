@@ -1,18 +1,12 @@
 # Remote - Module Federation Example
 
-Run this project alongside [Link Here]()
-
-![](repo-logo.png)
+Run this project alongside [the host app](https://github.com/waldronmatt/host-module-federation-example)
 
 ## Installation
 
 Install dependencies:
 
         npm install
-
-## Usage
-
-### Development server
 
 Run dev environment:
 
