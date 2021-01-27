@@ -1,6 +1,6 @@
 # Remote - Module Federation Example
 
-Run this project alongside [the host app](https://github.com/waldronmatt/host-module-federation-example)
+Run this project alongside [the host app](https://github.com/waldronmatt/host-module-federation-example).
 
 ## Installation
 
@@ -11,6 +11,8 @@ Install dependencies:
 Run dev environment:
 
         npm run dev
+
+Navigate to [http://localhost:9000/](http://localhost:9000/).
 
 ## TODO
 
