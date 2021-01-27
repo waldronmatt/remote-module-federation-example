@@ -85,7 +85,7 @@ module.exports = {
 
         Note that this will not affect nested paths like "lodash/pluck"
 
-        Note that this will disable some optimization on these packageswith might lead the bundle size problems
+        Note that this will disable some optimization on these packages which might lead to bundle size problems
       */
       shared: require("./package.json").dependencies,
     }),
