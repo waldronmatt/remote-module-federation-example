@@ -4,6 +4,8 @@ An exposed module federated app. [Click here to see it live on Netlify](https://
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/cf6cdaa0-edc1-488b-9844-7edb469b4eeb/deploy-status)](https://app.netlify.com/sites/remote-module-federation-example/deploys)
 
+A portion of this stand-alone app is exposed for consumption by the host app.
+
 Run this project alongside [the host app](https://github.com/waldronmatt/host-module-federation-example).
 
 ## Installation
