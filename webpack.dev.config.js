@@ -1,11 +1,12 @@
 const path = require("path");
 const chokidar = require("chokidar");
 const webpack = require("webpack");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 
 module.exports = {
+  target: "web",
+  mode: "development",
   entry: {
     app: ["./src/bootstrap.js"],
   },
@@ -14,7 +15,6 @@ module.exports = {
     path: path.resolve(__dirname, "./dist"),
     publicPath: "http://localhost:9000/",
   },
-  mode: "development",
   /* 
     hot reloading broken in dev-server, use chokidar instead: 
     https://github.com/webpack/webpack-dev-server/issues/2906
@@ -53,7 +53,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
@@ -72,20 +71,14 @@ module.exports = {
         "./initContactForm": "./src/form/init-contact-form",
       },
       /*
-        adds all your dependencies as shared modules
-
-        version is inferred from package.json in the dependencies
-
-        requiredVersion is used from your package.json
-
-        dependencies will automatically use the highest available package in the federated app, 
-        based on version requirement in package.json
-
-        multiple different versions might coexist in the federated app
-
-        Note that this will not affect nested paths like "lodash/pluck"
-
-        Note that this will disable some optimization on these packages which might lead to bundle size problems
+        - adds all your dependencies as shared modules
+        - version is inferred from package.json in the dependencies
+        - requiredVersion is used from your package.json
+        - dependencies will automatically use the highest available package in the federated app, 
+          based on version requirement in package.json
+        - multiple different versions might coexist in the federated app
+        - Note that this will not affect nested paths like "lodash/pluck"
+        - Note that this will disable some optimization on these packages which might lead to bundle size problems
       */
       shared: require("./package.json").dependencies,
     }),

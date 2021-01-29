@@ -1,23 +1,22 @@
 const path = require("path");
+const webpack = require("webpack");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 
 module.exports = {
-  entry: "./src/app.js",
-  output: {
-    filename: "[name].[contenthash].js",
-    path: path.resolve(__dirname, "./dist"),
-    publicPath: "http://localhost:9001/",
-  },
   mode: "production",
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-      minSize: 10000,
-      automaticNameDelimiter: "_",
-    },
+  target: "web",
+  entry: {
+    app: ["./src/bootstrap.js"],
+  },
+  output: {
+    filename: "[name].[contenthash:8].js",
+    // specify chunck path for code splitted files
+    chunkFilename: "[name].[contenthash:8].js",
+    path: path.resolve(__dirname, "./dist"),
+    publicPath: "http://remote-module-federation-example.netlify.app/",
   },
   module: {
     rules: [
@@ -40,33 +39,68 @@ module.exports = {
         test: /\.tpl/,
         type: "asset/source",
       },
-      {
-        test: /\.hbs$/,
-        use: ["handlebars-loader"],
-      },
     ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      // for webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`)
+      "...",
+      new CssMinimizerPlugin(),
+    ],
+    /*
+      SplitChunks finds modules which are shared between chunks and splits them
+      into separate chunks to reduce duplication or separate vendor modules from application modules.
+    */
+    splitChunks: {
+      /*
+        cacheGroups tells SplitChunksPlugin to create chunks based on some conditions
+      */
+      cacheGroups: {
+        // vendor chunk
+        vendor: {
+          // name of the chunk
+          name: "vendors-remote",
+          // Optimization over Async and Sync Module (a default'ish' setting for chuncks)
+          chunks: "all",
+          // import file path containing node_modules
+          test: /node_modules/,
+        },
+      },
+    },
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].[contenthash].css",
+      filename: "[name].[contenthash:8].css",
     }),
-    new CleanWebpackPlugin(),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
     }),
     new HtmlWebpackPlugin({
-      filename: "hello-world.html",
-      title: "Hello world",
-      description: "Hello world",
-      template: "src/page-template.hbs",
+      filename: "index.html",
+      title: "Remote",
+      description: "Remote App of Module Federation",
+      template: "src/template.ejs",
+      excludeChunks: ["server"],
     }),
     new ModuleFederationPlugin({
       name: "FormApp",
       filename: "remoteEntry.js",
       exposes: {
-        "./initForm": "./src/form/init-form.js",
+        "./initContactForm": "./src/form/init-contact-form",
       },
+      /*
+        - adds all your dependencies as shared modules
+        - version is inferred from package.json in the dependencies
+        - requiredVersion is used from your package.json
+        - dependencies will automatically use the highest available package in the federated app, 
+          based on version requirement in package.json
+        - multiple different versions might coexist in the federated app
+        - Note that this will not affect nested paths like "lodash/pluck"
+        - Note that this will disable some optimization on these packages which might lead to bundle size problems
+      */
+      shared: require("./package.json").dependencies,
     }),
   ],
 };
