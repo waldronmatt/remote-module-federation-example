@@ -18,10 +18,11 @@ Navigate to [http://localhost:9000/](http://localhost:9000/).
 
         npm run dev
 
-Build for production (locally)
+\*\*Build for production (locally)
 
-Note: Update public path to `http://localhost:9000/` in `webpack.production.config`
-Note: Update entry point to `./server.js` in `webpack.server.config`
+\*\*Note: Update public path to `http://localhost:9000/` in `webpack.production.config`
+
+\*\*Note: Update entry point to `./server.js` in `webpack.server.config`
 
         npm run build
 
