@@ -1,8 +1,10 @@
 # Remote - Module Federation Example
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cf6cdaa0-edc1-488b-9844-7edb469b4eeb/deploy-status)](https://app.netlify.com/sites/remote-module-federation-example/deploys)
+
 An exposed module federated app. [Click here to see it live on Netlify](https://remote-module-federation-example.netlify.app/).
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/cf6cdaa0-edc1-488b-9844-7edb469b4eeb/deploy-status)](https://app.netlify.com/sites/remote-module-federation-example/deploys)
+## Introduction
 
 A portion of this stand-alone app is exposed for consumption by the host app.
 
@@ -14,23 +16,26 @@ Install dependencies:
 
         npm install
 
-Run dev environment:
+## Usage
 
-Navigate to [http://localhost:9000/](http://localhost:9000/)
+Run dev environment:
 
         npm run dev
 
-Build for production (locally)
-
-Note: Update public path to `http://localhost:9000/` in `webpack.production.config`
-
-Note: Update entry point to `./server.js` in `webpack.server.config`
+**\*\*Build for production (locally):**
 
         npm run build
 
-Serve the production bundle (locally)
+Serve the production bundle (locally):
 
         npm run start
+
+Navigate to [http://localhost:9000/](http://localhost:9000/)
+
+\
+\***\*Note**: Update public path to `http://localhost:9000/` in `webpack.production.config`
+
+\***\*Note**: Update entry point to `./server.js` in `webpack.server.config`
 
 ## Contributing
 
