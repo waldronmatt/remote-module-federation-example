@@ -1,7 +1,11 @@
 <form id="demo-form" data-parsley-validate="">
+  <hr />
+  <br />
   <h1>Contact Us!</h1>
   <label for="fullname">Full Name * :</label>
   <input type="text" class="form-control" name="fullname" required="" />
+  <br />
+  <br />
 
   <label for="email">Email * :</label>
   <input
@@ -11,6 +15,21 @@
     data-parsley-trigger="change"
     required=""
   />
+  <br />
+  <br />
+
+  <label for="email">Phone * :</label>
+  <input
+    type="phone"
+    class="form-control"
+    name="phone"
+    data-parsley-trigger="change"
+    required=""
+    data-jquery-mask-phone
+    pattern="/^\(\d{3}\)\s?\d{3}-\d{4}$/"
+  />
+  <br />
+  <br />
 
   <label for="contactMethod">Preferred Contact Method *:</label>
   <p>
@@ -63,6 +82,7 @@
       <option value="other">Other..</option>
     </select>
   </p>
+  <br />
 
   <p>
     <label for="message">Message (20 chars min, 100 max) :</label>
